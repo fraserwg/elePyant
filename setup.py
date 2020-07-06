@@ -9,7 +9,7 @@ setup(
     scripts=[],  # ['bin/<<script_name>>]
     # url='http://pypi.python.org/pypi//',
     license='LICENSE',
-    description='An awesome package that does something',
+    description='Package that performs compression by rounding.',
     long_description=open('README.md').read(),
     install_requires=[],  # Need to add requirements
 )
