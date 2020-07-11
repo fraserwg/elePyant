@@ -11,5 +11,5 @@ setup(
     license='LICENSE',
     description='Package that performs compression by rounding.',
     long_description=open('README.md').read(),
-    install_requires=[],  # Need to add requirements
+    install_requires=['xarray', 'numpy', 'h5netcdf'],  # Need to add requirements
 )
