@@ -38,7 +38,7 @@ def compress_dataset(ds, out_filename, decimal_places, ignore_vars=None):
             Any unreferenced variables will remain unrounded.
         
     Keyword Args:
-        ignore_vars (list): Should only be set if decimal_places is int. Gives
+        ignore_vars (str or list): Should only be set if decimal_places is int. Gives
             a list of data variables that shouldn't be rounded. Defaults to
             None. If given when decimal_places is a dict, the code plays
             it safe and removes the items from decimal_places.
@@ -59,6 +59,9 @@ def compress_dataset(ds, out_filename, decimal_places, ignore_vars=None):
     assert type(decimal_places) is dict
 
     if ignore_vars is not None:
+        if type(ignore_vars) is str:
+            ignore_vars = [ignore_vars]
+        
         for var_to_remove in ignore_vars:
             decimal_places.pop(var_to_remove)
 
