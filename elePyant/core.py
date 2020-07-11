@@ -11,3 +11,7 @@ def compress_dataarray(data_array, out_filename, decimal_places):
     da_rounded.to_netcdf(out_filename,
                          encoding={da_rounded.name: {'zlib': True}},
                          engine='h5netcdf')
+
+
+def compress_dataset(data_set, out_filename, decimal_places):
+    raise NotImplementedError('Method not yet implemented')
