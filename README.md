@@ -44,9 +44,9 @@ Note that by default coordinates are never rounded. If you wish to round a coord
 ## Requirements
 
 The following packages are needed to run elePyant
-    *numpy
-    * xarray
-    * h5netcdf
+- numpy
+- xarray
+- h5netcdf
 
 ## Updates and feature requests
 
