@@ -41,12 +41,41 @@ ep.compress_dataset(ds, 'out.nc', decimal_places=2, ignore_vars='WVEL')
 
 Note that by default coordinates are never rounded. If you wish to round a coordinate, then the argument `decimal_places` must be a dictionary containing the coordinate you wish to round as a key.
 
-## Requirements
+## Installation
 
-The following packages are needed to run elePyant
+To run elePyant you will need a version of Python 3 with the following packages installed:
 - numpy
 - xarray
 - h5netcdf
+
+To install in development mode from the command line you can use:
+
+```bash
+pip install -e git+https://github.com/fraserwg/elePyant.git
+```
+
+which will automatically update the package when changes are made here.
+
+Alternatively you can clone the repository to your computer using
+
+```bash
+git clone https://github.com/fraserwg/elePyant.git
+cd elePyant
+pip install -e ./
+```
+
+or
+
+```bash
+git clone https://github.com/fraserwg/elePyant.git
+cd elePyant
+python setup.py build
+python setup.py install
+```
+
+You can then update to the latest version as and when you like by performing a `git pull`
+
+In the future I may make it possible to install from PyPi or using conda.
 
 ## Updates and feature requests
 
