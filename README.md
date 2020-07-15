@@ -48,7 +48,13 @@ To run elePyant you will need a version of Python 3 with the following packages 
 - xarray
 - h5netcdf
 
-To install in development mode from the command line you can use:
+The easiest way to install is from PyPi using pip. This can be done from the command line with
+
+```bash
+pip install elePyant
+```
+
+To install in development mode, directly from the repository here use
 
 ```bash
 pip install -e git+https://github.com/fraserwg/elePyant.git
@@ -56,7 +62,7 @@ pip install -e git+https://github.com/fraserwg/elePyant.git
 
 which will automatically update the package when changes are made here.
 
-Alternatively you can clone the repository to your computer using
+Alternatively you can clone the repository to your computer and then install using
 
 ```bash
 git clone https://github.com/fraserwg/elePyant.git
@@ -74,8 +80,6 @@ python setup.py install
 ```
 
 You can then update to the latest version as and when you like by performing a `git pull`
-
-In the future I may make it possible to install from PyPi or using conda.
 
 ## Updates and feature requests
 
