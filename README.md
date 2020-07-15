@@ -29,8 +29,8 @@ Advanced functionality allows the user to specify the rounding to use for each v
 
 ```python
 ep.compress_dataset(ds, 'out.nc', decimal_places={'UVEL': 2,
-                                                        'VVEL': 2,
-                                                        'WVEL': 6})
+                                                  'VVEL': 2,
+                                                  'WVEL': 6})
 ```
 
 which will round both `'UVEL'` and `'VVEL'` to two decimal places, but `'WVEL'` to six. Alternatively you may not wish to round `'WVEL'` at all in which case you could use
