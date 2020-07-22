@@ -1,3 +1,12 @@
+""" elePyant.core
+
+Core functions of elePyant.
+
+Contains methods:
+    compress_dataarray --> For compressing xarray.DataArray objects.
+    compress_dataset --> For compressing xarray.Dataset objects.
+    compress_netcdf --> For compressing netCDF files stored on the disk.
+"""
 import xarray as xr
 import numpy as np
 
@@ -15,7 +24,7 @@ def compress_dataarray(da, out_filename, decimal_places):
         - No rounding is applied to coordinates?
     """
 
-    assert type(da) is xr.DataArray
+    assert isinstance(da, xr.DataArray)
     # Check the filename is a path, directory etc.
 
     da_rounded = np.around(da, decimals=decimal_places)
@@ -36,7 +45,7 @@ def compress_dataset(ds, out_filename, decimal_places, ignore_vars=None):
             If dict, keys refer to the data variable or coordinate which is to
             be rounded. Values give the number of decimal places to round to.
             Any unreferenced variables will remain unrounded.
-        
+
     Keyword Args:
         ignore_vars (str or list): Should only be set if decimal_places is int. Gives
             a list of data variables that shouldn't be rounded. Defaults to
@@ -51,23 +60,23 @@ def compress_dataset(ds, out_filename, decimal_places, ignore_vars=None):
         - To achieve compression zlib compression must be applied after
             rounding. Otherwise we just have a load of empty bits.
     """
-    assert type(ds) is xr.Dataset  # This may mess with duck typing.
+    assert isinstance(ds, xr.Dataset)  # This may mess with duck typing.
 
-    if type(decimal_places) is int:
+    if isinstance(decimal_places, int):
         decimal_places = {var: decimal_places for var in ds.data_vars}
-        
-    assert type(decimal_places) is dict
+
+    assert isinstance(decimal_places, dict)
 
     if ignore_vars is not None:
-        if type(ignore_vars) is str:
+        if isinstance(ignore_vars, str):
             ignore_vars = [ignore_vars]
-        
+
         for var_to_remove in ignore_vars:
             decimal_places.pop(var_to_remove)
 
     for variable in decimal_places:
         ds[variable] = np.around(ds[variable],
-                                       decimals=decimal_places[variable])
+                                 decimals=decimal_places[variable])
 
     # Have to turn on lossless compression for each variable in ds.
     encoding = {ds_var: {'zlib': True} for ds_var in ds.variables}
@@ -87,7 +96,7 @@ def compress_netcdf(in_filename, out_filename, decimal_places, ignore_vars=None)
             If dict, keys refer to the data variable or coordinate which is to
             be rounded. Values give the number of decimal places to round to.
             Any unreferenced variables will remain unrounded.
-        
+
     Keyword Args:
         ignore_vars (list): Should only be set if decimal_places is int. Gives
             a list of data variables that shouldn't be rounded. Defaults to
