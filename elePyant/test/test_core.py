@@ -1,8 +1,12 @@
-import pytest
-import elePyant as ep
-import elePyant.test as ept
-import xarray as xr
+""" elePyant.test.test_core
+
+Module containing tests for the elePyant.core module.
+"""
 import os.path as osp
+import pytest
+import xarray as xr
+import elePyant.test as ept
+import elePyant as ep
 
 
 class TestDataArrayFuncs:
