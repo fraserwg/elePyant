@@ -62,6 +62,8 @@ def round_array(x, nsd=None, dsd=None):
 
     Args:
         x (numpy.ndarray)
+        nsd (int)
+        dsd (int)
 
     """
     if nsd and dsd:
@@ -77,9 +79,8 @@ def round_array(x, nsd=None, dsd=None):
         raise Exception("Must set either `nsd` or `dsd`.")
 
 
-
 def round_dataarray(da, *, keep_attrs=True, inplace=False, **kwargs):
-    """Round an xarray.DataArray
+    """Round and return an xarray.DataArray.
 
     Args:
         da (xarray.DataArray): Data array to be rounded
@@ -92,8 +93,9 @@ def round_dataarray(da, *, keep_attrs=True, inplace=False, **kwargs):
         kwargs : passed on to ``round_array``
 
     """
-    # optionally inplace?
     assert isinstance(da, xr.DataArray)
+
+    da_rounded = da if inplace else da.copy()
 
     da_rounded[:] = round_array(da.values, **kwargs)
 
@@ -113,7 +115,7 @@ def compress_dataarray(da, out_filename, decimal_places):
             variable to.
 
     Notes:
-        - No rounding is applied to coordinates?
+        - No rounding is applied to coordinates
     """
 
     assert isinstance(da, xr.DataArray)
