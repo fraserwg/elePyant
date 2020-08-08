@@ -44,9 +44,9 @@ def _round_nsd_base10(x, nsd):
     numpy.array
         rounded array
     """
-    where_zero = x == 0  # avoid taking log10 of 0
+    take_log = (x != 0) & np.isfinite(x)  # avoid taking log10 of 0 and inf/inf
     tens = np.ones_like(x)
-    tens[~where_zero] = 10 ** np.ceil(np.log10(np.abs(x[~where_zero].astype(np.float64))))
+    tens[take_log] = 10 ** np.ceil(np.log10(np.abs(x[take_log].astype(np.float64))))
     # note: could instead pass `where=where_zero` to np.abs or np.log etc.
     
     # "true normalized" significand
