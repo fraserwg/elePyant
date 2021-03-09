@@ -4,7 +4,7 @@ elePyant (pronounced elephant) provides a set of tools for compressing netCDF fi
 
 To give an idea of the performance that can be obtained, I was able to reduce and file from 1 GB in size to 30 MB by using only the functions within this package. No qualitative difference is visible in the dataset.
 
-The compression is based on work by Milan Kloewer. Often when working with data we only 'know' the value of a quantity to several significant figures. When we store it however we save the value as a 32 or 64 bit number, which can save the number using up to 11 decimal places or so. This is clearly overkill. By rounding all digits of surplus precision in our dataset to zero, we create a pattern in the binary used to encode the data. Lossless compression algorithms can then exploit these patterns to reduce the file size.
+The compression is based on the package [Elefridge.jl](https://github.com/esowc/Elefridge.jl) by Milan Kloewer. Often when working with data we only 'know' the value of a quantity to several significant figures. When we store it however we save the value as a 32 or 64 bit number, which can save the number using up to 11 decimal places or so. This is clearly overkill. By rounding all digits of surplus precision in our dataset to zero, we create a pattern in the binary used to encode the data. Lossless compression algorithms can then exploit these patterns to reduce the file size.
 
 The compression relies on the user having a good understanding of the data they are working with. It is up to the user to decide the 'true' precision of their dataset so that they can select appropriate rounding. The method of compression may not be suitable for all purposes as the initial rounding stage of the process is lossy.
 
