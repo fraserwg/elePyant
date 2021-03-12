@@ -4,6 +4,7 @@ Module containing tests for the elePyant.core module.
 """
 import os.path as osp
 import pytest
+import numpy as np
 import xarray as xr
 import elePyant.test as ept
 import elePyant as ep
@@ -58,3 +59,18 @@ class TestnetCDFFuncs:
         # Compress using dict decimal_places
         dp_dict = {'UVEL': 2, 'VVEL': 2, 'WVEL': 6}
         ep.compress_netcdf(ds_path, ds_out_path, dp_dict)
+
+
+@pytest.mark.parametrize(
+    ("x", "nsd", "expected"),
+    [
+        (
+            np.r_[1.114, 1.115, -1.114, 1.114e-30, 1.114e+30, 0, np.inf],
+            3,
+            np.r_[1.11, 1.12, -1.11, 1.11e-30, 1.11e+30, 0.0, np.inf]
+        ),
+    ]
+)
+def test_round_nsd_base10(x, nsd, expected):
+    rounded = ep.core._round_nsd_base10(x, nsd)
+    assert np.alltrue(rounded == expected)

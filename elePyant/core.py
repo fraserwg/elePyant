@@ -11,6 +11,100 @@ import xarray as xr
 import numpy as np
 
 
+def _round_dsd_base10(x, dsd):
+    """Round to preserve decimal places (in base 10).
+    
+    Parameters
+    ----------
+    x : numpy.ndarray
+    dsd : int
+        decimal significant digits
+        positive to the right of decimal point, negative to the left
+        
+    Returns
+    -------
+    numpy.array
+        rounded array
+    """
+    # original elePyant method
+    return np.around(x, decimals=dsd)
+
+
+def _round_nsd_base10(x, nsd):
+    """Round to preserve sig figs (in base 10).
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+    nsd : int
+        number of significant digits (sig figs)
+
+    Returns
+    -------
+    numpy.array
+        rounded array
+    """
+    take_log = (x != 0) & np.isfinite(x)  # avoid taking log10 of 0 and inf/inf
+    tens = np.ones_like(x)
+    tens[take_log] = 10 ** np.ceil(np.log10(np.abs(x[take_log].astype(np.float64))))
+    # note: could instead pass `where=where_zero` to np.abs or np.log etc.
+    
+    # "true normalized" significand
+    # https://en.wikipedia.org/wiki/Significand
+    x_sig = x / tens
+    
+    return np.around(x_sig, decimals=nsd) * tens
+    # or could pass to _round_dsd_base10
+
+
+def round_array(x, nsd=None, dsd=None):
+    """Round a NumPy array using selected method.
+
+    Args:
+        x (numpy.ndarray)
+        nsd (int)
+        dsd (int)
+
+    """
+    if nsd and dsd:
+        raise Exception(f"Must set either `nsd` or `dsd`, not both.")
+
+    if nsd:
+        return _round_nsd_base10(x, nsd)
+
+    elif dsd:
+        return _round_dsd_base10(x, dsd)
+
+    else:
+        raise Exception("Must set either `nsd` or `dsd`.")
+
+
+def round_dataarray(da, *, keep_attrs=True, inplace=False, **kwargs):
+    """Round and return an xarray.DataArray.
+
+    Args:
+        da (xarray.DataArray): Data array to be rounded
+
+        keep_attrs (bool): Whether to preserve the original attributes
+        inplace (bool): W
+            note `inplace` was deprecated in xarray
+            (https://github.com/pydata/xarray/issues/1756)
+
+        kwargs : passed on to ``round_array``
+
+    """
+    assert isinstance(da, xr.DataArray)
+
+    da_rounded = da if inplace else da.copy()
+
+    da_rounded[:] = round_array(da.values, **kwargs)
+
+    if not keep_attrs:
+        da_rounded.attrs = {}
+
+    return da_rounded
+
+
 def compress_dataarray(da, out_filename, decimal_places):
     """Compressses an xarray.DataArray object.
 
@@ -21,7 +115,7 @@ def compress_dataarray(da, out_filename, decimal_places):
             variable to.
 
     Notes:
-        - No rounding is applied to coordinates?
+        - No rounding is applied to coordinates
     """
 
     assert isinstance(da, xr.DataArray)
